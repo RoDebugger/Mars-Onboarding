@@ -127,10 +127,10 @@ this.ScenarioInitialize(scenarioInfo);
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Edit an existing language in the profile")]
         [NUnit.Framework.CategoryAttribute("EditLang")]
-        [NUnit.Framework.TestCaseAttribute("English-edited", "Expert", null)]
-        [NUnit.Framework.TestCaseAttribute("French-edited", "Intermediate", null)]
-        [NUnit.Framework.TestCaseAttribute("German-edited", "Expert", null)]
-        [NUnit.Framework.TestCaseAttribute("Italian-edited", "Intermediate", null)]
+        [NUnit.Framework.TestCaseAttribute("Sinhala", "Expert", null)]
+        [NUnit.Framework.TestCaseAttribute("Tamil", "Intermediate", null)]
+        [NUnit.Framework.TestCaseAttribute("Maori", "Expert", null)]
+        [NUnit.Framework.TestCaseAttribute("Greek", "Intermediate", null)]
         public async System.Threading.Tasks.Task EditAnExistingLanguageInTheProfile(string language, string level, string[] exampleTags)
         {
             string[] @__tags = new string[] {
@@ -294,6 +294,50 @@ this.ScenarioInitialize(scenarioInfo);
 #line hidden
 #line 57
  await testRunner.ThenAsync("An error message should be displayed indicating that both fields are required", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
+#line hidden
+            }
+            await this.ScenarioCleanupAsync();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("As a user I should not be able to add the same language twice with different leve" +
+            "ls")]
+        [NUnit.Framework.CategoryAttribute("SameLang")]
+        [NUnit.Framework.TestCaseAttribute("English", "Basic", "English has been added to your languages", null)]
+        [NUnit.Framework.TestCaseAttribute("English", "Intermediate", "This language is already exist in your language list.", null)]
+        public async System.Threading.Tasks.Task AsAUserIShouldNotBeAbleToAddTheSameLanguageTwiceWithDifferentLevels(string language, string level, string expectedMessage, string[] exampleTags)
+        {
+            string[] @__tags = new string[] {
+                    "SameLang"};
+            if ((exampleTags != null))
+            {
+                @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
+            }
+            string[] tagsOfScenario = @__tags;
+            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            argumentsOfScenario.Add("language", language);
+            argumentsOfScenario.Add("level", level);
+            argumentsOfScenario.Add("expectedMessage", expectedMessage);
+            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("As a user I should not be able to add the same language twice with different leve" +
+                    "ls", null, tagsOfScenario, argumentsOfScenario, featureTags);
+#line 60
+this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                await this.ScenarioStartAsync();
+#line 61
+await testRunner.GivenAsync("I logged in successfully", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
+#line hidden
+#line 62
+await testRunner.WhenAsync(string.Format("I added a new \'{0}\' and \'{1}\' two times", language, level), ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
+#line hidden
+#line 63
+await testRunner.ThenAsync(string.Format("I should see an \'{0}\' message", expectedMessage), ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
 #line hidden
             }
             await this.ScenarioCleanupAsync();

@@ -1,5 +1,6 @@
 using System;
 using Mars_Onboarding.Pages;
+using NUnit.Framework;
 using OpenQA.Selenium;
 using Reqnroll;
 
@@ -11,14 +12,17 @@ namespace Mars_Onboarding.StepDefinitions
 
         private IWebDriver driver;
         private ScenarioContext _scenarioContext;
-
-        public SkillsFeatureStepDefinitions(IWebDriver driver, ScenarioContext scenarioContext)
+        private LoginPage loginPage;
+        private SkillsPage skillsPage;
+        public SkillsFeatureStepDefinitions(IWebDriver driver, ScenarioContext scenarioContext, LoginPage loginPage, SkillsPage skillsPage)
         {
             this.driver = driver;
             _scenarioContext = scenarioContext;
+            this.loginPage = loginPage;
+            this.skillsPage = skillsPage;
         }
-        LoginPage loginPage = new LoginPage();
-        SkillsPage skillsPage = new SkillsPage();
+      
+      
 
 
         [When("I added a new {string} to my list of skills")]
@@ -33,7 +37,8 @@ namespace Mars_Onboarding.StepDefinitions
         public void ThenIShouldSeeTheNewInTheListOfSkills(string skill)
         {
            
-            skillsPage.GetSkill(driver, skill);
+            skillsPage.GetSkill(driver,skill);
+         
         }
         
 
@@ -79,7 +84,9 @@ namespace Mars_Onboarding.StepDefinitions
         public void ThenAnErrorMessageShouldBeDisplayedIndicatingThatTheLevelRequired()
         {
 
-            skillsPage.VerifyEmptyLevelError(driver);
+            skillsPage.GetEmptyFieldsError(driver);
+            IWebElement errorMessage = driver.FindElement(By.XPath("/html/body/div[1]"));
+           Assert.That(errorMessage.Text.Contains("Please enter skill and experience level"), Is.True, "Test Failed: Error message not displayed as expected.");
         }
 
         [When("I added a new skill to my profile with only the level field filled")]
@@ -93,7 +100,9 @@ namespace Mars_Onboarding.StepDefinitions
         public void ThenAnErrorMessageShouldBeDisplayedIndicatingThatTheSkillIsRequired()
         {
 
-            skillsPage.VerifyEmptySkillError(driver);
+            skillsPage.GetEmptyFieldsError(driver);
+            IWebElement errorMessage = driver.FindElement(By.XPath("/html/body/div[1]"));
+            Assert.That(errorMessage.Text.Contains("Please enter skill and experience level"), Is.True, "Test Failed: Error message not displayed as expected.");
         }
 
         [When("I added a new skill to my profile with empty fields")]
@@ -102,12 +111,35 @@ namespace Mars_Onboarding.StepDefinitions
 
             skillsPage.AddSkillWithEmptyFields(driver);
         }
+           
+        
         [Then("An error message should be displayed indicating that both the fields are required")]
         public void ThenAnErrorMessageShouldBeDisplayedIndicatingThatBothTheFieldsAreRequired()
         {
 
-            skillsPage.VerifyErrorMessage(driver);
+            skillsPage.GetEmptyFieldsError(driver);
+            IWebElement errorMessage = driver.FindElement(By.XPath("/html/body/div[1]"));
+            Assert.That(errorMessage.Text.Contains("Please enter skill and experience level"), Is.True, "Test Failed: Error message not displayed as expected.");
         }
+
+
+
+
+        [When("I added a new {string} to my profile with level {string}")]
+        public void WhenIAddedANewToMyProfileWithLevel(string skill, string level)
+        {
+           skillsPage.AddSameSkillWithDifferentLevel(driver, skill, level);
+        }
+
+        [Then("I should see a {string} message")]
+        public void ThenIShouldSeeAMessage(string message)
+        {
+            skillsPage.VerifyAddedSkill(driver, message);
+            IWebElement webElement = driver.FindElement(By.XPath("/html/body/div[1]"));
+            Assert.That(webElement.Text.Contains(message), Is.True, "Test Failed: Message not displayed as expected.");
+
+        }
+
 
 
 

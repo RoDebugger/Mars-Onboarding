@@ -43,9 +43,11 @@ namespace Mars_Onboarding.Pages
 
         public void GetSkill(IWebDriver driver, string skill)
         {
+
             WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(30));
 
             IWebElement newSkill = wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementIsVisible(AddedSkill));
+
             Assert.That(newSkill.Text == skill, Is.True, "Test Failed: Skill not added.");
 
         }
@@ -76,9 +78,9 @@ namespace Mars_Onboarding.Pages
             WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(30));
             IWebElement updatedSkill = wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementIsVisible(AddedSkill));
             Assert.That(updatedSkill.Text == skill, Is.True, "Test Failed: Skill not updated.");
-            
+
         }
-        public void GetUpdatedSkillLevel(IWebDriver driver,string skill, string level)
+        public void GetUpdatedSkillLevel(IWebDriver driver, string skill, string level)
         {
             WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(40));
             IWebElement updatedSkillLevel = wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementIsVisible(By.XPath("//*[@id=\"account-profile-section\"]/div/section[2]/div/div/div/div[3]/form/div[3]/div/div[2]/div/table/tbody[last()]/tr/td[2]")));
@@ -115,11 +117,10 @@ namespace Mars_Onboarding.Pages
             addSkillButton1.Click();
         }
 
-        public void VerifyEmptyLevelError(IWebDriver driver)
+        public string GetEmptyFieldsError(IWebDriver driver)
         {
-            WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(20));
-            IWebElement errorMessage = wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementIsVisible(By.XPath("/html/body/div[1]/div")));
-            Assert.That(errorMessage.Text == "Please enter skill and experience level", Is.True, "Test Failed: Error message not displayed.");
+           
+            return driver.FindElement(By.XPath("/html/body/div[1]/div")).Text;
 
         }
 
@@ -137,11 +138,9 @@ namespace Mars_Onboarding.Pages
             IWebElement addSkillButton1 = driver.FindElement(By.XPath("//*[@id=\"account-profile-section\"]/div/section[2]/div/div/div/div[3]/form/div[3]/div/div[2]/div/div/span/input[1]"));
             addSkillButton1.Click();
         }
-        public void VerifyEmptySkillError(IWebDriver driver)
+        public string GetEmptySkillError(IWebDriver driver)
         {
-            WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(20));
-            IWebElement errorMessage = wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementIsVisible(By.XPath("/html/body/div[1]/div")));
-            Assert.That(errorMessage.Text == "Please enter skill and experience level", Is.True, "Test Failed: Error message not displayed.");
+            return driver.FindElement(By.XPath("/html/body/div[1]/div")).Text;
         }
         public void AddSkillWithEmptyFields(IWebDriver driver)
         {
@@ -154,12 +153,46 @@ namespace Mars_Onboarding.Pages
             addSkillButton1.Click();
         }
 
-        public void VerifyErrorMessage(IWebDriver driver)
+       
+        public void AddSameSkillWithDifferentLevel(IWebDriver driver, string skill, string level)
+
         {
             WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(20));
-            IWebElement errorMessage = wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementIsVisible(By.XPath("/html/body/div[1]/div")));
-            Assert.That(errorMessage.Text == "Please enter skill and experience level", Is.True, "Test Failed: Error message not displayed.");
+            IWebElement skillsTab = wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementToBeClickable(SkillsTab));
+            skillsTab.Click();
+            IWebElement addSkillButton = wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementToBeClickable(AddSkillButton));
+            addSkillButton.Click();
+            IWebElement skillField = driver.FindElement(SkillField);
+            skillField.SendKeys(skill);
+            IWebElement skillLevelDropdown = driver.FindElement(SkillLevelDropdown);
+            skillLevelDropdown.Click();
+            SelectElement selectSkillLevel = new SelectElement(skillLevelDropdown);
+            selectSkillLevel.SelectByText(level);
+
+            IWebElement addSkillButton1 = driver.FindElement(AddButton);
+            addSkillButton1.Click();
+
+
         }
 
+        public string VerifyAddedSkill(IWebDriver driver, string message)
+        {
+            return driver.FindElement(By.XPath("/html/body/div[1]/div")).Text;
+
+        }
+
+        public void RemoveSkill(IWebDriver driver, string skill)
+        {
+           var skillRow = driver.FindElement(AddedSkill);
+            if (skillRow != null)
+            {
+                var deleteButton = skillRow.FindElement(DeleteButton);
+                deleteButton.Click();
+            }
+            else
+            {
+                throw new NoSuchElementException($"Skill '{skill}' not found for deletion.");
+            }
+        }
     }
 }

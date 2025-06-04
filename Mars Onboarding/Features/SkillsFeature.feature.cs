@@ -127,10 +127,10 @@ this.ScenarioInitialize(scenarioInfo);
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Edit an existing skill in the profile")]
         [NUnit.Framework.CategoryAttribute("EditSkill")]
-        [NUnit.Framework.TestCaseAttribute("Java-edited", "Expert", null)]
-        [NUnit.Framework.TestCaseAttribute("Python-edited", "Intermediate", null)]
-        [NUnit.Framework.TestCaseAttribute("JavaScript-edited", "Expert", null)]
-        [NUnit.Framework.TestCaseAttribute("C#-edited", "Intermediate", null)]
+        [NUnit.Framework.TestCaseAttribute("Testing", "Expert", null)]
+        [NUnit.Framework.TestCaseAttribute("Coding", "Intermediate", null)]
+        [NUnit.Framework.TestCaseAttribute("Analysing", "Expert", null)]
+        [NUnit.Framework.TestCaseAttribute("Writing", "Intermediate", null)]
         public async System.Threading.Tasks.Task EditAnExistingSkillInTheProfile(string skill, string level, string[] exampleTags)
         {
             string[] @__tags = new string[] {
@@ -288,6 +288,48 @@ this.ScenarioInitialize(scenarioInfo);
 #line 56
  await testRunner.ThenAsync("An error message should be displayed indicating that both the fields are required" +
                         "", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
+#line hidden
+            }
+            await this.ScenarioCleanupAsync();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("As a user I should not be able to add the same skill twice with different levels")]
+        [NUnit.Framework.CategoryAttribute("SameSkill")]
+        [NUnit.Framework.TestCaseAttribute("Java", "Expert", "Java has been added to your skills", null)]
+        [NUnit.Framework.TestCaseAttribute("Java", "Intermediate", "Duplicated data", null)]
+        public async System.Threading.Tasks.Task AsAUserIShouldNotBeAbleToAddTheSameSkillTwiceWithDifferentLevels(string skill, string level, string expectedMessage, string[] exampleTags)
+        {
+            string[] @__tags = new string[] {
+                    "SameSkill"};
+            if ((exampleTags != null))
+            {
+                @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
+            }
+            string[] tagsOfScenario = @__tags;
+            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            argumentsOfScenario.Add("skill", skill);
+            argumentsOfScenario.Add("level", level);
+            argumentsOfScenario.Add("expectedMessage", expectedMessage);
+            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("As a user I should not be able to add the same skill twice with different levels", null, tagsOfScenario, argumentsOfScenario, featureTags);
+#line 59
+this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                await this.ScenarioStartAsync();
+#line 60
+ await testRunner.GivenAsync("I logged in successfully", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
+#line hidden
+#line 61
+ await testRunner.WhenAsync(string.Format("I added a new \'{0}\' to my profile with level \'{1}\'", skill, level), ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
+#line hidden
+#line 62
+ await testRunner.ThenAsync(string.Format("I should see a \"{0}\" message", expectedMessage), ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
 #line hidden
             }
             await this.ScenarioCleanupAsync();

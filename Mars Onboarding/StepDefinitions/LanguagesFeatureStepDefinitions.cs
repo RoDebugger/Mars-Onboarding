@@ -4,6 +4,7 @@ using OpenQA.Selenium;
 using Reqnroll;
 using Mars_Onboarding.Pages;
 using static System.Runtime.InteropServices.JavaScript.JSType;
+using NUnit.Framework;
 
 namespace Mars_Onboarding.StepDefinitions
 {
@@ -12,15 +13,16 @@ namespace Mars_Onboarding.StepDefinitions
     {
         private IWebDriver driver;
         private ScenarioContext _scenarioContext;
-
-        public LanguagesFeatureStepDefinitions(IWebDriver driver, ScenarioContext scenarioContext)
+        private LoginPage loginPage;
+        private LanguagesPage languagesPage;
+        public LanguagesFeatureStepDefinitions(IWebDriver driver, ScenarioContext scenarioContext, LoginPage loginPage, LanguagesPage languagesPage)
         {
             this.driver = driver;
             _scenarioContext = scenarioContext;
+            this.loginPage = loginPage;
+            this.languagesPage = languagesPage;
         }
-        LoginPage loginPage = new LoginPage();
-        LanguagesPage languagesPage = new LanguagesPage();
-       
+        
 
         [Given("I logged in successfully")]
         public void GivenILoggedInSuccessfully()
@@ -93,7 +95,9 @@ namespace Mars_Onboarding.StepDefinitions
         public void ThenAnErrorMessageShouldBeDisplayedIndicatingThatTheLanguageLevelIsRequired()
         {
            
-            languagesPage.VerifyEmptyLangLevel(driver);
+            languagesPage.GetEmptyFieldsError(driver);
+            IWebElement errorMessage = driver.FindElement(By.XPath("/html/body/div[1]"));
+            Assert.That(errorMessage.Text == "Please enter language and level", Is.True, "Test Failed: Language level not empty.");
         }
 
         [When("I added a new language to my profile with only the level field filled")]
@@ -107,7 +111,9 @@ namespace Mars_Onboarding.StepDefinitions
         public void ThenAnErrorMessageShouldBeDisplayedIndicatingThatTheLanguageIsRequired()
         {
            
-            languagesPage.VerifyEmptyLanguageField(driver);
+            languagesPage.GetEmptyFieldsError(driver);
+            IWebElement errorMessage = driver.FindElement(By.XPath("/html/body/div[1]"));
+            Assert.That(errorMessage.Text == "Please enter language and level", Is.True, "Test Failed: Language field not empty.");
         }
 
         [When("I added a new language to my profile with empty fields")]
@@ -121,10 +127,26 @@ namespace Mars_Onboarding.StepDefinitions
         public void ThenAnErrorMessageShouldBeDisplayedIndicatingThatBothFieldsAreRequired()
         {
            
-            languagesPage.VerifyBothEmptyFields(driver);
+            languagesPage.GetEmptyFieldsError(driver);
+            IWebElement errorMessage = driver.FindElement(By.XPath("/html/body/div[1]"));
+            Assert.That(errorMessage.Text == "Please enter language and level", Is.True, "Test Failed: Language and level fields not empty.");
+        }
+        [When("I added a new {string} and {string} two times")]
+        public void WhenIAddedANewAndTwoTimes(string language, string level)
+        {
+           languagesPage.AddSameLanguage(driver, language, level);
         }
 
-       
+        [Then("I should see an {string} message")]
+        public void ThenIShouldSeeAnMessage(string expectedMessage)
+        {
+            languagesPage.GetSameLanguageError(driver);
+            IWebElement errorMessage = driver.FindElement(By.XPath("/html/body/div[1]"));
+            Assert.That(errorMessage.Text == expectedMessage, Is.True, $"Test Failed: Expected message '{expectedMessage}' but got '{errorMessage.Text}'.");
+        }
+
+
+
 
     }
 }

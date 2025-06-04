@@ -74,14 +74,15 @@ namespace Mars_Onboarding.Hooks
                 skillsPage.DeleteSkill(driver, editedSkill);
 
             }
-            }
+        }
+
+        
 
 
 
 
 
-
-            [AfterScenario]
+        [AfterScenario]
 
 
             public void TearDown()

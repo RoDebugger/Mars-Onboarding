@@ -23,10 +23,10 @@ Scenario Outline: Edit an existing language in the profile
 	Then I should see the updated '<language>' and '<level>' in my profile
  Examples: 
 	| language | level |
-	| English-edited | Expert |
-	| French-edited  | Intermediate |
-	| German-edited  | Expert       |
-	| Italian-edited | Intermediate |
+	| Sinhala | Expert |
+	| Tamil  | Intermediate |
+	| Maori  | Expert       |
+	| Greek | Intermediate |
 
 @DeleteLang
 Scenario Outline: Delete a language from the profile
@@ -55,3 +55,15 @@ Scenario: Add a new language with filling only level and not the language
 	Given I logged in successfully
 	When I added a new language to my profile with empty fields
 	Then An error message should be displayed indicating that both fields are required
+
+	@SameLang
+Scenario Outline: As a user I should not be able to add the same language twice with different levels
+Given I logged in successfully
+When I added a new '<language>' and '<level>' two times
+Then I should see an '<expectedMessage >' message
+Examples: 
+| language | level        | expectedMessage |
+| English  | Basic        | English has been added to your languages |
+| English  | Intermediate | This language is already exist in your language list. |
+
+

@@ -21,10 +21,10 @@ Scenario Outline: Edit an existing skill in the profile
 	Then I should see the updated '<skill>' and '<level>' in my profile
 	Examples: 
 	| skill             | level        |
-	| Java-edited       | Expert       |
-	| Python-edited     | Intermediate |
-	| JavaScript-edited | Expert       |
-	| C#-edited         | Intermediate |
+	| Testing       | Expert       |
+	| Coding     | Intermediate |
+	| Analysing | Expert       |
+	| Writing         | Intermediate |
 
 Scenario Outline: Delete a skill from the profile		
 	Given I logged in successfully
@@ -54,5 +54,14 @@ Scenario: Add a new skill with empty fields
 	Given I logged in successfully
 	When I added a new skill to my profile with empty fields
 	Then An error message should be displayed indicating that both the fields are required
-	
+
+@SameSkill
+Scenario Outline: As a user I should not be able to add the same skill twice with different levels
+	Given I logged in successfully
+	When I added a new '<skill>' to my profile with level '<level>'
+	Then I should see a "<expectedMessage>" message
+	Examples: 
+	| skill | level  | expectedMessage                    |
+	| Java  | Expert | Java has been added to your skills |
+	| Java  | Intermediate | Duplicated data |
 			

@@ -22,12 +22,10 @@ namespace Mars_Onboarding.Pages
         private readonly By SaveButton = By.XPath("//*[@id=\"account-profile-section\"]/div/section[2]/div/div/div/div[3]/form/div[2]/div/div[2]/div/table/tbody[last()]/tr/td/div/span/input[1]");
         private readonly By DeleteButton = By.XPath("//*[@id=\"account-profile-section\"]/div/section[2]/div/div/div/div[3]/form/div[2]/div/div[2]/div/table/tbody[last()]/tr/td[3]/span[2]/i");
 
-        public void AddLanguage(IWebDriver driver,string language)
+        public void AddLanguage(IWebDriver driver, string language)
         {
             WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(20));
-            IWebElement languageTabElement = wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementToBeClickable(LanguageTab));
-            languageTabElement.Click();
-            Thread.Sleep(2000); // Wait for the page to load
+
             IWebElement addLanguageButtonElement = wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementToBeClickable(AddLanguageButton));
             addLanguageButtonElement.Click();
             IWebElement languageField = wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementIsVisible(LanguageField));
@@ -51,8 +49,7 @@ namespace Mars_Onboarding.Pages
         public void EditLanguage(IWebDriver driver, string language, string level)
         {
             WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(20));
-            IWebElement languageTabElement = wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementToBeClickable(LanguageTab));
-            languageTabElement.Click();
+
             Thread.Sleep(2000); // Wait for the page to load
             IWebElement editLanguageButton = wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementToBeClickable(EditButton));
             editLanguageButton.Click();
@@ -113,16 +110,9 @@ namespace Mars_Onboarding.Pages
             addButton.Click();
         }
 
-        public void VerifyEmptyLangLevel(IWebDriver driver)
+        public void AddLanguageWithEmptyField(IWebDriver driver)
         {
-            WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
-            IWebElement errorMessage = wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementIsVisible(By.XPath("/html/body/div[1]")));
-            Assert.That(errorMessage.Text == "Please enter language and level", Is.True, "Test Failed: Language level not empty.");
-        }
-
-        public void AddLanguageWithEmptyField(IWebDriver driver) 
-        {
-            WebDriverWait wait = new WebDriverWait (driver, TimeSpan.FromSeconds(20));
+            WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(20));
             IWebElement addLanguageButton = wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementToBeClickable(AddLanguageButton));
             addLanguageButton.Click();
             IWebElement levelDropdown = driver.FindElement(LevelDropdown);
@@ -135,15 +125,6 @@ namespace Mars_Onboarding.Pages
 
         }
 
-        public void VerifyEmptyLanguageField(IWebDriver driver)
-        {
-            WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(20));
-            IWebElement errorMessage = wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementIsVisible(By.XPath("/html/body/div[1]")));
-            Assert.That(errorMessage.Text == "Please enter language and level", Is.True, "Test Failed: Language level not empty.");
-
-        }
-
-
         public void AddLanguagewithBothEmptyFields(IWebDriver driver)
         {
             WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(20));
@@ -153,13 +134,29 @@ namespace Mars_Onboarding.Pages
             addButton.Click();
         }
 
-        public void VerifyBothEmptyFields(IWebDriver driver)
+        public string GetEmptyFieldsError(IWebDriver driver)
+        {
+            return driver.FindElement(By.XPath("/html/body/div[1]")).Text;
+
+        }
+        public void AddSameLanguage(IWebDriver driver, string language, string level)
         {
             WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(20));
-            IWebElement errorMessage = wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementIsVisible(By.XPath("/html/body/div[1]")));
-            Assert.That(errorMessage.Text == "Please enter language and level", Is.True, "Test Failed: Language level not empty.");
+            IWebElement addLanguageButton = wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementToBeClickable(AddLanguageButton));
+            addLanguageButton.Click();
+            IWebElement languageField = wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementIsVisible(LanguageField));
+            languageField.SendKeys(language);
+            IWebElement levelDropdown = driver.FindElement(LevelDropdown);
+            levelDropdown.Click();
+            SelectElement selectElement = new SelectElement(levelDropdown);
+            selectElement.SelectByText("Basic");
+            IWebElement addButton = driver.FindElement(AddButton);
+            addButton.Click();
         }
 
-
+        public string GetSameLanguageError(IWebDriver driver)
+        {
+            return driver.FindElement(By.XPath("/html/body/div[1]")).Text;
+        }
     }
 }
