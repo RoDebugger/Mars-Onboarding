@@ -9,12 +9,14 @@ namespace Mars_Onboarding.StepDefinitions
     public class LoginFeatureStepDefinitions
     {
             private IWebDriver driver;
+        private LoginPage loginPage;
 
-            public LoginFeatureStepDefinitions(IWebDriver driver)
+        public LoginFeatureStepDefinitions(IWebDriver driver)
             {
                 this.driver = driver;
-            }
-            LoginPage loginPage = new LoginPage();
+            this.loginPage = new LoginPage();
+        }
+           
 
         [Given("I am on the login page")]
         public void GivenIAmOnTheLoginPage()
