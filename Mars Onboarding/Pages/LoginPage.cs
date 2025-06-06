@@ -49,11 +49,10 @@ namespace Mars_Onboarding.Pages
 
         }
 
-        public void SuccessfulLogin(IWebDriver driver)
+        public string GetSuccessfulLogin(IWebDriver driver)
         {
-            WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(20));
-            IWebElement profileNameElement = wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementIsVisible(ProfileName));
-            Assert.That(profileNameElement.Text == "Hi Roshini", Is.True, "Test Failed: Login was not successful.");
+            return driver.FindElement(ProfileName).Text;
+
         }
 
         public void InvalidLogin(IWebDriver driver)
@@ -63,6 +62,8 @@ namespace Mars_Onboarding.Pages
             emaillFieldElement.SendKeys("roshini@duranit.lk");
             IWebElement passwordFieldElement = driver.FindElement(PasswordField);
             passwordFieldElement.SendKeys("Roshini123");
+            IWebElement loginButton= driver.FindElement(LoginButton);
+            loginButton.Click();
 
         }
 
@@ -108,40 +109,32 @@ namespace Mars_Onboarding.Pages
             loginButtonElement.Click();
         }
 
-        public void ErrorMessage(IWebDriver driver)
+        public string ErrorMessage(IWebDriver driver)
         {
-            WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(20));
-            IWebElement errorMessageElement = wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementIsVisible(ConfirmEmailPop));
-            Assert.That(errorMessageElement.Text == "Confirm your email", Is.True, "Test Failed: Error message not displayed as expected.");
-
-
+            return driver.FindElement(ConfirmEmailPop).Text;
+            
         }
-        public void ErrorNotification(IWebDriver driver)
+        public string ErrorNotification(IWebDriver driver)
         {
-            WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
-            IWebElement errorNotificationElement = wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementIsVisible(SendVerification));
-            Assert.That(errorNotificationElement.Text == "Send Verification Email", Is.True, "Test Failed: Error notification not displayed as expected.");
+            return driver.FindElement(SendVerification).Text;
         }
-
+       
         public void ClickVerifyButton(IWebDriver driver)
         {
-            WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(40));
-            IWebElement verifyButtonElement = wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementIsVisible(SendVerification));
-            verifyButtonElement.Click();
+
+            IWebElement verifyButton = driver.FindElement(By.XPath("//*[@id=\"submit-btn\"]"));
+            verifyButton.Click();
         }
 
-        public void VerifyEmailFailed(IWebDriver driver)
+        public string VerifyEmailFailed(IWebDriver driver)
         {
-            WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(20));
-            IWebElement verifyEmailElement = wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementIsVisible(FailedVerification));
-            Assert.That(verifyEmailElement.Text == "Email Verification Failed", Is.True, "Test Failed: Email verification failed.");
+            return driver.FindElement(FailedVerification).Text;
+            
         }
 
-        public void VerifyEmailSuccess(IWebDriver driver)
+        public string VerifyEmailSuccess(IWebDriver driver)
         {
-            WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(20));
-            IWebElement verifyEmailElement = wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementIsVisible(ConfirmEmailPop));
-            Assert.That(verifyEmailElement.Text == "Email Verification Sent", Is.True, "Test Failed: Email verification was not successful.");
+            return driver.FindElement(ConfirmEmailPop).Text;
         }
         public void VerifyEmail(IWebDriver driver)
         {
