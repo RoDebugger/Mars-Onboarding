@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.13.35913.81 d17.13
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mars Onboarding", "Mars Onboarding\Mars Onboarding.csproj", "{4A52E0A3-0706-46BA-9E5F-CED5AE29614C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{4A52E0A3-0706-46BA-9E5F-CED5AE29614C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4A52E0A3-0706-46BA-9E5F-CED5AE29614C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4A52E0A3-0706-46BA-9E5F-CED5AE29614C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4A52E0A3-0706-46BA-9E5F-CED5AE29614C}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {1C59E5FC-996C-4A28-BF59-461392FC5F03}
+	EndGlobalSection
+EndGlobal
